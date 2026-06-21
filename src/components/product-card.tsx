@@ -4,7 +4,7 @@ import { type Product, formatColones } from '../lib/products'
 export function ProductCard({ product }: { product: Product }) {
   return (
     <Link to={`/producto/${product.id}`} className="group block">
-      <div className="relative aspect-[4/5] w-full overflow-hidden rounded-md bg-muted">
+      <div className="relative aspect-4/5 w-full overflow-hidden rounded-md bg-muted">
         <img
           src={product.image || '/placeholder.svg'}
           alt={product.name}
@@ -16,14 +16,20 @@ export function ProductCard({ product }: { product: Product }) {
           </span>
         )}
       </div>
-      <div className="mt-3 flex justify-between gap-3">
-        <div className='flex flex-col items-start '>
-          <h3 className="text-sm font-medium leading-tight text-black">{product.name}</h3>
-          <p className="mt-0.5 text-xs text-muted-foreground">
+      
+      {/* Añadimos w-full aquí para asegurar estabilidad en el ancho */}
+      <div className="mt-3 flex justify-between gap-3 w-full">
+        {/* Cambiamos a w-full y nos aseguramos de alinear correctamente */}
+        <div className='flex flex-col items-start gap-2 w-full'>
+          <h3 className="text-sm font-medium tracking-tight text-black text-left">{product.name}</h3>
+          
+          {/* CORRECCIÓN AQUÍ: Quitamos 'flex' y corregimos a 'text-left' */}
+          <p className="mt-0.5 text-xs text-left text-gray-600">
             {product.shortDescription}
           </p>
+          
+          <span className="shrink-0 text-sm text-black font-semibold">{formatColones(product.price)}</span>
         </div>
-        <span className="shrink-0 text-sm text-black">{formatColones(product.price)}</span>
       </div>
     </Link>
   )

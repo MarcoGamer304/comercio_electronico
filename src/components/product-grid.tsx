@@ -3,7 +3,7 @@ import { products } from '../lib/products'
 import { ProductCard } from './product-card'
 import { cn } from '../lib/utils'
 
-const categories = ['Todos', 'Trajes', 'Blusas', 'Faldas', 'Textiles']
+const categories = ['Todos', 'Trajes', 'Blusas', 'Camisas', 'Textiles']
 
 export function ProductGrid() {
   const [active, setActive] = useState('Todos')
@@ -14,17 +14,27 @@ export function ProductGrid() {
       : products.filter((p) => p.category === active)
 
   return (
-    <section id="galeria" className="mx-auto max-w-6xl px-5 py-16 md:py-24">
-      <div className="mb-10 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
-        <div>
-          <p className="mb-3 text-xs uppercase tracking-[0.25em] text-muted-foreground flex items-start">
-            La colección
-          </p>
-          <h2 className="font-heading text-4xl tracking-tight md:text-5xl">
+    <section id="galeria" className="mx-auto max-w-6xl px-5 py-12 md:py-12">
+      
+      {/* 1. Div superior independiente: Centrado */}
+      <div className="mb-8 text-center">
+        <p className="tracking-tight text-2xl uppercase font-semibold text-black">
+          La colección
+        </p>
+      </div>
+
+      {/* 2. Div inferior: Galería a la izquierda, Filtros a la derecha a la misma altura */}
+      <div className="mb-8 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+        
+        {/* Izquierda */}
+        <div className="mb-8 md:mb-0">
+          <p className="text-2xl tracking-tight font-medium text-gray-500 ">
             Galería de prendas
-          </h2>
+          </p>
         </div>
-        <div className="flex flex-wrap gap-2">
+        
+        {/* Derecha */}
+        <div className="flex flex-wrap gap-2 md:justify-end">
           {categories.map((cat) => (
             <button
               key={cat}
@@ -42,6 +52,7 @@ export function ProductGrid() {
         </div>
       </div>
 
+      {/* Grilla de productos */}
       <div className="grid grid-cols-2 gap-x-5 gap-y-10 md:grid-cols-3">
         {filtered.map((product) => (
           <ProductCard key={product.id} product={product} />
