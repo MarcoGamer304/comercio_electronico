@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom"; // Cambiamos Link por useNavigate
 import { useState } from "react";
 import { ChevronLeft, Check } from "lucide-react";
 import { Button } from "./ui/button";
@@ -16,22 +16,38 @@ export function ProductDetail({ product }: { product: Product }) {
   const [notes, setNotes] = useState("");
   const isCustom = size === "A medida";
 
+  const navigate = useNavigate();
+
   function handleAdd() {
     addItem(product, { size, notes: notes.trim() || undefined });
   }
 
+  // Redirige al inicio y baja suavemente hasta la sección de la galería
+  const handleBackToGallery = () => {
+    navigate("/");
+
+    // Le damos un brevísimo momento a React Router para montar la vista 'Home'
+    setTimeout(() => {
+      const element = document.getElementById("galeria");
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth" });
+      }
+    }, 80);
+  };
+
   return (
     <div className="mx-auto max-w-6xl px-5 py-6 md:py-10">
-      <Link
-        to="/#galeria"
-        className="mb-6 inline-flex items-center gap-1 text-sm text-muted-foreground transition-colors hover:text-foreground"
+      {/* Botón corregido con comportamiento de navegación y scroll */}
+      <button
+        onClick={handleBackToGallery}
+        className="mb-6 inline-flex items-center gap-1 text-sm text-muted-foreground transition-colors hover:text-foreground cursor-pointer text-gray-700"
       >
         <ChevronLeft className="size-4" />
         Volver a la galería
-      </Link>
+      </button>
 
       <div className="grid gap-10 md:grid-cols-2 md:gap-14">
-        <div className="relative aspect-[4/5] w-full overflow-hidden rounded-lg bg-muted">
+        <div className="relative aspect-4/5 w-full overflow-hidden rounded-lg bg-muted">
           <img
             src={product.image || "/placeholder.svg"}
             alt={product.name}
@@ -39,20 +55,24 @@ export function ProductDetail({ product }: { product: Product }) {
           />
         </div>
 
-        <div>
-          <p className="text-xs uppercase tracking-[0.25em] text-muted-foreground">
-            {product.category}
-          </p>
-          <h1 className="mt-2 font-heading text-4xl tracking-tight md:text-5xl">
-            {product.name}
-          </h1>
-          <p className="mt-4 font-heading text-2xl">
-            {formatColones(product.price)}
-          </p>
+        {/* ... Resto de tu código intacto ... */}
+        <div className="text-gray-700 bg-white p-6 rounded-lg shadow">
 
-          <p className="mt-6 leading-relaxed text-muted-foreground">
-            {product.description}
-          </p>
+          <div className="flex flex-col gap-6 items-center">
+            <p className="text-xs uppercase tracking-[0.25em] text-muted-foreground">
+              {product.category}
+            </p>
+            <p className="mt-2 font-heading text-4xl tracking-tight md:text-5xl text-black">
+              {product.name}
+            </p>
+            <p className="mt-4 font-heading text-2xl">
+              {formatColones(product.price)}
+            </p>
+
+            <p className="mt-6 leading-relaxed text-muted-foreground">
+              {product.description}
+            </p>
+          </div>
 
           <div className="mt-8">
             <Label className="text-sm">Talla</Label>
@@ -85,9 +105,9 @@ export function ProductDetail({ product }: { product: Product }) {
                 value={notes}
                 onChange={(e) => setNotes(e.target.value)}
                 placeholder="Ej: busto 90cm, cintura 70cm, cadera 96cm, alto 1.65m. Color preferido..."
-                className="mt-3 min-h-28"
+                className="mt-3 mb-2 md:mb-2 min-h-28"
               />
-              <p className="mt-2 text-xs text-muted-foreground">
+              <p className="mt-2 md:mt-2 text-xs text-muted-foreground">
                 Confirmaremos los detalles por correo antes de confeccionar.
               </p>
             </div>

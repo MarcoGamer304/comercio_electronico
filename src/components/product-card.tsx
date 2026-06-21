@@ -24,7 +24,7 @@ export function ProductCard({ product }: { product: Product }) {
           <h3 className="text-sm font-medium tracking-tight text-black text-left">{product.name}</h3>
           
           {/* CORRECCIÓN AQUÍ: Quitamos 'flex' y corregimos a 'text-left' */}
-          <p className="mt-0.5 text-xs text-left text-gray-600">
+          <p className="mt-0.5 text-xs text-left text-gray-700">
             {product.shortDescription}
           </p>
           

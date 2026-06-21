@@ -28,7 +28,7 @@ export function ProductGrid() {
         
         {/* Izquierda */}
         <div className="mb-8 md:mb-0">
-          <p className="text-2xl tracking-tight font-medium text-gray-500 ">
+          <p className="text-2xl tracking-tight font-medium text-gray-700 ">
             Galería de prendas
           </p>
         </div>

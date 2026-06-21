@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { useState, type FormEvent } from 'react'
 import { Check, ChevronLeft } from 'lucide-react'
 import { Button } from './ui/button'
@@ -14,6 +14,7 @@ import { useCart } from './cart-provider'
 import { formatColones } from '../lib/products'
 
 export function CheckoutView() {
+
   const { items, subtotal, clear } = useCart()
   const [submitted, setSubmitted] = useState(false)
   const [shipping, setShipping] = useState('domicilio')
@@ -21,6 +22,19 @@ export function CheckoutView() {
   const shippingCost = items.length === 0 ? 0 : shipping === 'domicilio' ? 3500 : 0
   const total = subtotal + shippingCost
   const hasCustom = items.some((i) => i.size === 'A medida')
+
+  const location = useLocation();
+
+  // Función para manejar el scroll suave manual dentro de la misma página
+  const handleScrollLink = (e: React.MouseEvent<HTMLAnchorElement>, targetId: string) => {
+    if (location.pathname === '/') {
+      e.preventDefault()
+      const element = document.getElementById(targetId)
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' })
+      }
+    }
+  }
 
   function handleSubmit(e: FormEvent) {
     e.preventDefault()
@@ -31,18 +45,20 @@ export function CheckoutView() {
 
   if (submitted) {
     return (
-      <div className="mx-auto max-w-md px-5 py-24 text-center">
+      <div className="mx-auto max-w-md px-5 py-16 text-gray-700 text-center gap-4 flex flex-col items-center">
         <div className="mx-auto flex size-14 items-center justify-center rounded-full bg-primary text-primary-foreground">
-          <Check className="size-6" />
+          <Check className="size-6 text-green-600" />
         </div>
-        <h1 className="mt-6 font-heading text-3xl">¡Pedido recibido!</h1>
+        <p className="mt-6 font-heading text-3xl text-black">¡Pedido recibido!</p>
         <p className="mt-3 leading-relaxed text-muted-foreground">
-          Gracias por apoyar la artesanía costarricense. Te enviaremos un correo
+          Gracias por apoyar el folclore costarricense. Te enviaremos un correo
           para confirmar los detalles
-          {hasCustom ? ' y coordinar las medidas de tus prendas a medida' : ''}.
+          {hasCustom ? ' y coordinar las medidas solicitadas' : ''}.
         </p>
-        <Link to="/#galeria">
-          <Button className="mt-8">
+        <Link
+          to="/#galeria"
+          onClick={(e) => handleScrollLink(e, 'galeria')}>
+          <Button className="mt-8 bg-[#B23A26] text-white w-full border-none hover:bg-[#9c3220] transition-colors">
             Seguir explorando
           </Button>
         </Link>
@@ -52,13 +68,15 @@ export function CheckoutView() {
 
   if (items.length === 0) {
     return (
-      <div className="mx-auto max-w-md px-5 py-24 text-center">
-        <h1 className="font-heading text-3xl">Tu carrito está vacío</h1>
+      <div className="mx-auto max-w-md px-5 py-24 text-center gap-2 flex flex-col items-center text-gray-700">
+        <p className="font-heading text-3xl text-black">Tu carrito está vacío</p>
         <p className="mt-3 text-muted-foreground">
           Agrega prendas para continuar con tu pedido.
         </p>
-        <Link to="/#galeria">
-          <Button className="mt-8">
+        <Link
+          to="/#galeria"
+          onClick={(e) => handleScrollLink(e, 'galeria')}>
+          <Button className="mt-4 bg-[#B23A26] text-white w-full border-none hover:bg-[#9c3220] transition-colors">
             Ver galería
           </Button>
         </Link>
@@ -67,7 +85,7 @@ export function CheckoutView() {
   }
 
   return (
-    <div className="mx-auto max-w-6xl px-5 py-8 md:py-12 bg-[#F9F6F0]">
+    <div className="mx-auto max-w-6xl px-5 py-8 md:py-12 bg-[#F9F6F0] text-gray-600">
       <Link
         to="/#galeria"
         className="mb-6 inline-flex items-center gap-1 text-sm text-muted-foreground transition-colors hover:text-foreground"
@@ -76,14 +94,14 @@ export function CheckoutView() {
         Seguir comprando
       </Link>
 
-      <h1 className="font-heading text-4xl tracking-tight md:text-5xl">
+      <p className="font-heading text-4xl tracking-tight md:text-5xl text-black">
         Finalizar pedido
-      </h1>
+      </p>
 
-      <div className="mt-10 grid gap-12 lg:grid-cols-[1fr_380px]">
+      <div className="mt-10 grid gap-12 lg:grid-cols-[1fr_380px] bg-white p-8 rounded-lg">
         <form onSubmit={handleSubmit} className="space-y-10">
           <fieldset className="space-y-4">
-            <legend className="font-heading text-xl">Datos de contacto</legend>
+            <legend className="font-heading text-xl text-black">Datos de contacto</legend>
             <div className="grid gap-4 sm:grid-cols-2">
               <div className="space-y-2">
                 <Label htmlFor="name">Nombre completo</Label>
@@ -106,16 +124,23 @@ export function CheckoutView() {
           </fieldset>
 
           <fieldset className="space-y-4">
-            <legend className="font-heading text-xl">Entrega</legend>
-            <RadioGroup value={shipping} onValueChange={setShipping}>
+            <legend className="font-heading text-xl text-black">Entrega</legend>
+            <RadioGroup value={shipping} onValueChange={setShipping} className="grid gap-3">
+
+              {/* Opción 1: Domicilio */}
               <Label
                 htmlFor="domicilio"
-                className="flex cursor-pointer items-center justify-between rounded-md border border-border p-4"
+                className="flex cursor-pointer items-center justify-between rounded-md border border-border p-4 transition-colors hover:bg-zinc-50"
               >
                 <span className="flex items-center gap-3">
-                  <RadioGroupItem value="domicilio" id="domicilio" />
+                  {/* CORRECCIÓN AQUÍ: Agregamos clases de borde y de estado seleccionado (data-[state=checked]) */}
+                  <RadioGroupItem
+                    value="domicilio"
+                    id="domicilio"
+                    className="border-gray-400 text-gray-900 focus:border-gray-900 data-[state=checked]:bg-gray-900 data-[state=checked]:text-white"
+                  />
                   <span>
-                    <span className="block text-sm font-medium">
+                    <span className="block text-sm font-medium text-black">
                       Envío a domicilio
                     </span>
                     <span className="block text-xs text-muted-foreground">
@@ -123,16 +148,23 @@ export function CheckoutView() {
                     </span>
                   </span>
                 </span>
-                <span className="text-sm">{formatColones(3500)}</span>
+                <span className="text-sm font-medium">{formatColones(3500)}</span>
               </Label>
+
+              {/* Opción 2: Retiro */}
               <Label
                 htmlFor="retiro"
-                className="flex cursor-pointer items-center justify-between rounded-md border border-border p-4"
+                className="flex cursor-pointer items-center justify-between rounded-md border border-border p-4 transition-colors hover:bg-gray-50"
               >
                 <span className="flex items-center gap-3">
-                  <RadioGroupItem value="retiro" id="retiro" />
+                  {/* CORRECCIÓN AQUÍ: Mismas clases de control para el estado del círculo */}
+                  <RadioGroupItem
+                    value="retiro"
+                    id="retiro"
+                    className="border-gray-400 text-gray-900 focus:border-gray-900 data-[state=checked]:bg-gray-900 data-[state=checked]:text-white"
+                  />
                   <span>
-                    <span className="block text-sm font-medium">
+                    <span className="block text-sm font-medium text-black">
                       Retiro en taller
                     </span>
                     <span className="block text-xs text-muted-foreground">
@@ -140,30 +172,35 @@ export function CheckoutView() {
                     </span>
                   </span>
                 </span>
-                <span className="text-sm">Gratis</span>
+                <span className="text-sm font-medium text-green-600">Gratis</span>
               </Label>
+
             </RadioGroup>
+
             {shipping === 'domicilio' && (
-              <div className="space-y-2">
-                <Label htmlFor="address">Dirección</Label>
+              <div className="space-y-2 mt-4">
+                <Label htmlFor="address" className="text-sm font-medium">Dirección</Label>
                 <Textarea
                   id="address"
                   required
                   placeholder="Provincia, cantón, distrito y señas exactas"
+                  className="mt-1 min-h-20"
                 />
               </div>
             )}
           </fieldset>
 
           {hasCustom && (
-            <fieldset className="space-y-4">
-              <legend className="font-heading text-xl">Pedido a medida</legend>
+            <fieldset className="space-y-4 flex flex-col gap-4 text-start">
+              <legend className="font-heading text-xl text-black text-center">Pedido a medida</legend>
               <p className="text-sm text-muted-foreground">
                 Tu pedido incluye prendas a medida. Coordinaremos las medidas
                 contigo antes de confeccionar.
               </p>
-              <div className="space-y-2">
-                <Label htmlFor="custom-notes">Notas adicionales</Label>
+              <div className="space-y-2 mt-4">
+                <Label htmlFor="custom-notes" className="mb-4">
+                  Notas adicionales
+                </Label>
                 <Textarea
                   id="custom-notes"
                   placeholder="Fechas importantes, preferencias de color, referencias..."
@@ -182,7 +219,7 @@ export function CheckoutView() {
         </form>
 
         <aside className="h-fit rounded-lg border border-border bg-secondary p-6 lg:sticky lg:top-24">
-          <h2 className="font-heading text-xl">Resumen</h2>
+          <p className="font-heading text-xl text-black">Resumen</p>
           <ul className="mt-5 space-y-4">
             {items.map((item) => (
               <li

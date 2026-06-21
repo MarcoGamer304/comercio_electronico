@@ -1,5 +1,5 @@
 import { Ruler, Scissors, Truck } from 'lucide-react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { Button } from './ui/button'
 
 const steps = [
@@ -24,16 +24,30 @@ const steps = [
 ]
 
 export function CustomOrder() {
+
+  const location = useLocation();
+
+  // Función para manejar el scroll suave manual dentro de la misma página
+  const handleScrollLink = (e: React.MouseEvent<HTMLAnchorElement>, targetId: string) => {
+    if (location.pathname === '/') {
+      e.preventDefault()
+      const element = document.getElementById(targetId)
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' })
+      }
+    }
+  }
   return (
     <section id="pedidos" className="bg-secondary bg-[#EFEBE2]">
-      <div className="mx-auto max-w-6xl px-5 py-16 md:py-24">
-        <div className="mx-auto max-w-2xl flex flex-col items-center">
+      <div className="mx-auto max-w-6xl px-5 py-16 md:py-16 text-gray-700">
+        
+        <div className="mx-auto max-w-2xl flex flex-col gap-8 items-center">
           <p className="mb-3 text-xs uppercase tracking-[0.25em] text-muted-foreground">
             Pedidos a medida
           </p>
-          <h2 className="text-balance font-heading tracking-tight subtitle-size pt-3">
+          <p className="font-heading tracking-tight font-medium text-6xl pt-3 text-amber-700">
             Una prenda hecha solo para ti
-          </h2>
+          </p>
           <p className="mx-auto mt-5 max-w-xl text-pretty leading-relaxed text-muted-foreground">
             Cada cuerpo es distinto y cada celebración es única. Confeccionamos
             trajes típicos y textiles a tu medida, respetando la técnica
@@ -43,10 +57,10 @@ export function CustomOrder() {
 
         <div className="mt-12 grid gap-8 md:grid-cols-3" >
           {steps.map((step, i) => (
-           <div key={step.title} className="text-center flex flex-col gap-1">
-                <div className="mx-auto flex rounded-full items-center justify-center bg-white p-4 shadow-sm mb-2">
-                  <step.icon className="text-primary size-5 font-red" />
-                </div>
+            <div key={step.title} className="text-center flex flex-col gap-1">
+              <div className="mx-auto flex rounded-full items-center justify-center bg-white p-4 shadow-sm mb-2">
+                <step.icon className="text-primary size-5 font-red" />
+              </div>
               <p className="text-xs uppercase tracking-widest text-muted-foreground">
                 Paso {i + 1}
               </p>
@@ -59,7 +73,10 @@ export function CustomOrder() {
         </div>
 
         <div className="mt-12 text-center">
-          <Link to="/#galeria">
+          <Link
+            to="/#galeria"
+            onClick={(e) => handleScrollLink(e, 'galeria')}
+          >
             <Button size="lg" className="bg-[#B23A26] text-white">
               Empezar mi pedido
             </Button>

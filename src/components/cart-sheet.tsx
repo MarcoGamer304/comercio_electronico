@@ -24,9 +24,9 @@ export function CartSheet() {
 
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
-      <SheetContent className="flex w-full flex-col gap-0 sm:max-w-md bg-white">
+      <SheetContent className="flex w-full flex-col gap-0 sm:max-w-md bg-[#EFEBE2] text-gray-700">
         <SheetHeader className="border-b border-border">
-          <SheetTitle className="font-heading text-xl font-normal">
+          <SheetTitle className="font-heading text-xl font-normal text-black">
             Tu carrito
           </SheetTitle>
         </SheetHeader>
