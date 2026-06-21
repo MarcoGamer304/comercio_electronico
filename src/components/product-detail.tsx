@@ -121,20 +121,22 @@ export function ProductDetail({ product }: { product: Product }) {
             Agregar al carrito
           </Button>
 
-          <ul className="mt-8 space-y-3 border-t border-border pt-6 text-sm text-muted-foreground">
-            <li className="flex gap-3">
+          <ul className="mt-8 space-y-3 border-t border-border pt-6 text-sm text-muted-foreground flex flex-col items-start">
+            <li className="flex gap-3 items-start">
               <Check className="size-4 shrink-0 text-primary" />
-              {product.materials}
+              <span className="flex-1 text-left min-w-0">{product.materials}</span>
             </li>
-            <li className="flex gap-3">
+            <li className="flex gap-3 items-start">
               <Check className="size-4 shrink-0 text-primary" />
-              {product.madeToOrder
-                ? "Disponible para confección a medida"
-                : "Pieza lista para envío"}
+              <span className="flex-1 text-left min-w-0">
+                {product.madeToOrder
+                  ? 'Disponible para confección a medida'
+                  : 'Pieza lista para envío'}
+              </span>
             </li>
-            <li className="flex gap-3">
+            <li className="flex gap-3 items-start">
               <Check className="size-4 shrink-0 text-primary" />
-              Hecho a mano por artesanas costarricenses
+              <span className="flex-1 text-left min-w-0">Hecho a mano por artesanas costarricenses</span>
             </li>
           </ul>
         </div>

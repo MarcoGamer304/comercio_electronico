@@ -17,7 +17,7 @@ export function Hero() {
   }
 
   return (
-    <section className="mx-auto px-5 pt-24 pb-12 md:pt-24 md:pb-12 color-primary">
+    <section className="mx-auto px-5 pb-12 pt-5 md:pt-0 md:pb-12 color-primary">
       {/* Contenedor principal */}
       <div className="mx-auto max-w-3xl flex flex-col gap-8 items-center text-center py-12 md:py-12">
 

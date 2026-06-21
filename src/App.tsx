@@ -10,6 +10,7 @@ import { StorySection } from './components/story-section'
 import { ProductDetail } from './components/product-detail'
 import { CheckoutView } from './components/checkout-view'
 import { getProduct } from './lib/products'
+import { ScrollToTop } from './components/scroll-to-top'
 
 function HomePage() {
   return (
@@ -35,6 +36,7 @@ function App() {
   return (
     <CartProvider>
       <Router>
+        <ScrollToTop />
         <div className="flex min-h-screen flex-col">
           <SiteHeader />
           <main className="flex-1">

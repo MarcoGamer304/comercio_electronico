@@ -16,18 +16,15 @@ export function SiteHeader() {
 
   const location = useLocation()
 
-  // Función para manejar el desplazamiento suave
   const handleScrollLink = (e: React.MouseEvent<HTMLAnchorElement>, _href: string, targetId: string) => {
-    // Si ya estamos en la página de inicio ('/'), hacemos scroll suave sin recargar
     if (location.pathname === '/') {
       e.preventDefault()
       const element = document.getElementById(targetId)
       if (element) {
         element.scrollIntoView({ behavior: 'smooth' })
       }
-      setMobileOpen(false) // Cierra el menú móvil si estaba abierto
+      setMobileOpen(false) 
     }
-    // Si estás en otra ruta (ej: /producto/1), dejamos que el <Link> actúe normal y te lleve a '/'
   }
   const handleLogoClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
     if (location.pathname === '/') {
@@ -86,7 +83,7 @@ export function SiteHeader() {
             <span className="hidden md:inline">Carrito</span>
 
             {totalItems > 0 && (
-              <span className="-right-2 -top-2 flex size-5 items-center justify-center rounded border border-zinc-500 text-[10px] font-semibold text-gray-700 md:static md:size-6 md:text-xs">
+              <span className="-right-2 -top-2 flex size-5 items-center justify-center rounded border border-zinc-500 text-[10px] font-semibold text-gray-700 md:static md:size-6 md:text-xs bg-red">
                 {totalItems}
               </span>
             )}

@@ -27,7 +27,6 @@ export function CustomOrder() {
 
   const location = useLocation();
 
-  // Función para manejar el scroll suave manual dentro de la misma página
   const handleScrollLink = (e: React.MouseEvent<HTMLAnchorElement>, targetId: string) => {
     if (location.pathname === '/') {
       e.preventDefault()
@@ -41,11 +40,11 @@ export function CustomOrder() {
     <section id="pedidos" className="bg-secondary bg-[#EFEBE2]">
       <div className="mx-auto max-w-6xl px-5 py-16 md:py-16 text-gray-700">
         
-        <div className="mx-auto max-w-2xl flex flex-col gap-8 items-center">
+        <div className="mx-auto max-w-2xl flex flex-col gap-5 items-center">
           <p className="mb-3 text-xs uppercase tracking-[0.25em] text-muted-foreground">
             Pedidos a medida
           </p>
-          <p className="font-heading tracking-tight font-medium text-6xl pt-3 text-amber-700">
+          <p className="font-heading tracking-tight font-medium pb-3 text-5xl text-amber-700">
             Una prenda hecha solo para ti
           </p>
           <p className="mx-auto mt-5 max-w-xl text-pretty leading-relaxed text-muted-foreground">

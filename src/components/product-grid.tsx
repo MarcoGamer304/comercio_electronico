@@ -14,11 +14,11 @@ export function ProductGrid() {
       : products.filter((p) => p.category === active)
 
   return (
-    <section id="galeria" className="mx-auto max-w-6xl px-5 py-12 md:py-12">
+    <section id="galeria" className="mb-6 px-5 py-4 md:py-12 mt-5">
       
       {/* 1. Div superior independiente: Centrado */}
-      <div className="mb-8 text-center">
-        <p className="tracking-tight text-2xl uppercase font-semibold text-black">
+      <div className="mb-1 text-center">
+        <p className="text-xs uppercase tracking-[0.25em] text-gray-700 font-semibold">
           La colección
         </p>
       </div>
@@ -27,8 +27,8 @@ export function ProductGrid() {
       <div className="mb-8 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
         
         {/* Izquierda */}
-        <div className="mb-8 md:mb-0">
-          <p className="text-2xl tracking-tight font-medium text-gray-700 ">
+        <div className="mb-2 md:mb-0">
+          <p className="text-3xl tracking-tight font-medium text-gray-700 ">
             Galería de prendas
           </p>
         </div>

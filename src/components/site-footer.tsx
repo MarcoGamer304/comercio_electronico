@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom'
 
 export function SiteFooter() {
   return (
-    <footer className=" bg-pink-950">
-      <div className="mx-auto max-w-6xl px-5 py-14 text-white">
+    <footer className="bg-[#EFEBE2]">
+      <div className="mx-auto max-w-6xl px-5 py-14 ">
         <div className="gap-10 grid md:flex md:justify-between md:items-center">
 
           <div className="md:col-span-2 flex flex-col items-center">

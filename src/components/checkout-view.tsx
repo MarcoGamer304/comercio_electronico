@@ -12,6 +12,7 @@ import {
 } from './ui/radio-group'
 import { useCart } from './cart-provider'
 import { formatColones } from '../lib/products'
+import { HashLink } from 'react-router-hash-link';
 
 export function CheckoutView() {
 
@@ -86,19 +87,16 @@ export function CheckoutView() {
 
   return (
     <div className="mx-auto max-w-6xl px-5 py-8 md:py-12 bg-[#F9F6F0] text-gray-600">
-      <Link
+      <HashLink
+        smooth
         to="/#galeria"
         className="mb-6 inline-flex items-center gap-1 text-sm text-muted-foreground transition-colors hover:text-foreground"
       >
         <ChevronLeft className="size-4" />
         Seguir comprando
-      </Link>
+      </HashLink>
 
-      <p className="font-heading text-4xl tracking-tight md:text-5xl text-black">
-        Finalizar pedido
-      </p>
-
-      <div className="mt-10 grid gap-12 lg:grid-cols-[1fr_380px] bg-white p-8 rounded-lg">
+      <div className="mt-2 grid gap-12 lg:grid-cols-[1fr_380px] bg-white p-8 rounded-lg">
         <form onSubmit={handleSubmit} className="space-y-10">
           <fieldset className="space-y-4">
             <legend className="font-heading text-xl text-black">Datos de contacto</legend>
@@ -218,13 +216,13 @@ export function CheckoutView() {
           </p>
         </form>
 
-        <aside className="h-fit rounded-lg border border-border bg-secondary p-6 lg:sticky lg:top-24">
+        <aside className="order-first lg:order-none h-fit rounded-lg border border-border bg-secondary p-6 lg:sticky lg:top-24">
           <p className="font-heading text-xl text-black">Resumen</p>
           <ul className="mt-5 space-y-4">
             {items.map((item) => (
               <li
                 key={`${item.product.id}-${item.size}`}
-                className="flex gap-3"
+                className="flex gap-3 items-start"
               >
                 <div className="relative size-16 shrink-0 overflow-hidden rounded-sm bg-muted">
                   <img
@@ -233,8 +231,8 @@ export function CheckoutView() {
                     className="h-full w-full object-cover"
                   />
                 </div>
-                <div className="flex flex-1 flex-col items-start text-black">
-                  <span className="text-sm font-medium leading-tight">
+                <div className="flex flex-1 flex-col items-start text-black min-w-0">
+                  <span className="text-sm font-medium leading-tight text-start ">
                     {item.product.name}
                   </span>
                   <span className="text-xs text-muted-foreground">

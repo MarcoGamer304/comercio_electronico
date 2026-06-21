@@ -10,20 +10,17 @@ export function ProductCard({ product }: { product: Product }) {
           alt={product.name}
           className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.04]"
         />
-        {product.madeToOrder && (
-          <span className="absolute left-3 top-3 rounded-full bg-background/90 px-3 py-1 text-[10px] uppercase tracking-wider text-foreground backdrop-blur">
+       { /*product.madeToOrder && (
+          <span className="border text-black border-black absolute left-3 top-3 rounded-full bg-background/90 px-3 py-1 text-[10px] uppercase tracking-wider text-foreground backdrop-blur">
             A medida
           </span>
-        )}
+        )*/}
       </div>
       
-      {/* Añadimos w-full aquí para asegurar estabilidad en el ancho */}
       <div className="mt-3 flex justify-between gap-3 w-full">
-        {/* Cambiamos a w-full y nos aseguramos de alinear correctamente */}
         <div className='flex flex-col items-start gap-2 w-full'>
           <h3 className="text-sm font-medium tracking-tight text-black text-left">{product.name}</h3>
           
-          {/* CORRECCIÓN AQUÍ: Quitamos 'flex' y corregimos a 'text-left' */}
           <p className="mt-0.5 text-xs text-left text-gray-700">
             {product.shortDescription}
           </p>
