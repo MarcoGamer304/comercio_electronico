@@ -4,6 +4,7 @@ import {
   useContext,
   useMemo,
   useState,
+  useEffect, // 1. Importamos useEffect
   type ReactNode,
 } from 'react'
 import type { Product } from '../lib/products'
@@ -30,8 +31,20 @@ type CartContextType = {
 const CartContext = createContext<CartContextType | null>(null)
 
 export function CartProvider({ children }: { children: ReactNode }) {
-  const [items, setItems] = useState<CartItem[]>([])
+  // 2. Inicializamos el estado cargando lo que ya exista en el navegador
+  const [items, setItems] = useState<CartItem[]>(() => {
+    if (typeof window !== 'undefined') {
+      const savedCart = localStorage.getItem('folclore_carrito')
+      return savedCart ? JSON.parse(savedCart) : []
+    }
+    return []
+  })
   const [isOpen, setIsOpen] = useState(false)
+
+  // 3. Efecto automático: Cada vez que 'items' cambie, se guarda en el LocalStorage
+  useEffect(() => {
+    localStorage.setItem('folclore_carrito', JSON.stringify(items))
+  }, [items])
 
   function addItem(
     product: Product,

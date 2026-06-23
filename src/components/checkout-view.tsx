@@ -12,9 +12,58 @@ import {
 } from './ui/radio-group'
 import { useCart } from './cart-provider'
 import { formatColones } from '../lib/products'
+
+// Lista de productos complementarios con imágenes reales
+const PRODUCTOS_COMPLEMENTARIOS = [
+  {
+    id: 'comp-1',
+    name: 'Pañuelo Folklórico Rojo',
+    price: 3000,
+    image: 'https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?w=400&auto=format&fit=crop&q=60',
+    category: 'Accesorios',
+    shortDescription: 'Pañuelo tradicional para completar tu atuendo folklórico.',
+    description: 'Pañuelo de tela liviana con colores típicos, ideal para adornar el traje folklórico y darle un toque elegante.',
+    materials: 'Tela ligera y resistente',
+    madeToOrder: false,
+  },
+  {
+    id: 'comp-2',
+    name: 'Cinta Costarricense para Pelo',
+    price: 2500,
+    image: 'https://images.unsplash.com/photo-1606760227091-3dd870d97f1d?w=400&auto=format&fit=crop&q=60',
+    category: 'Accesorios',
+    shortDescription: 'Cinta decorativa con estilo costarricense para el cabello.',
+    description: 'Cinta para pelo con colores inspirados en la tradición folklórica costarricense, perfecta para eventos culturales y fiestas típicas.',
+    materials: 'Algodón y seda',
+    madeToOrder: false,
+  },
+  {
+    id: 'comp-3',
+    name: 'Arracadas / Aretes Típicos',
+    price: 4500,
+    image: 'https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=400&auto=format&fit=crop&q=60',
+    category: 'Accesorios',
+    shortDescription: 'Aretes tradicionales para complementar el conjunto folklórico.',
+    description: 'Arracadas artesanales que realzan el estilo folklórico con un diseño clásico y colores tradicionales.',
+    materials: 'Metal y textiles decorativos',
+    madeToOrder: false,
+  },
+  {
+    id: 'comp-4',
+    name: 'Abanico Artesanal de Madera',
+    price: 6000,
+    image: 'https://images.unsplash.com/photo-1566937169390-7be4c63b8a0e?w=400&auto=format&fit=crop&q=60',
+    category: 'Accesorios',
+    shortDescription: 'Abanico de madera hecho a mano para eventos folklóricos.',
+    description: 'Abanico artesanal con detalles tradicionales, ideal para usar en bailes folklóricos y celebraciones típicas.',
+    materials: 'Madera y tela pintada',
+    madeToOrder: false,
+  },
+];
+
 export function CheckoutView() {
 
-  const { items, subtotal, clear } = useCart()
+  const { items, subtotal, clear, addItem } = useCart() // Eliminado el "as any"
   const [submitted, setSubmitted] = useState(false)
   const [shipping, setShipping] = useState('domicilio')
 
@@ -24,7 +73,6 @@ export function CheckoutView() {
 
   const location = useLocation();
 
-  // Función para manejar el scroll suave manual dentro de la misma página
   const handleScrollLink = (e: React.MouseEvent<HTMLAnchorElement>, targetId: string) => {
     if (location.pathname === '/') {
       e.preventDefault()
@@ -122,14 +170,11 @@ export function CheckoutView() {
           <fieldset className="space-y-4">
             <legend className="font-heading text-xl text-black">Entrega</legend>
             <RadioGroup value={shipping} onValueChange={setShipping} className="grid gap-3">
-
-              {/* Opción 1: Domicilio */}
               <Label
                 htmlFor="domicilio"
                 className="flex cursor-pointer items-center justify-between rounded-md border border-border p-4 transition-colors hover:bg-zinc-50"
               >
                 <span className="flex items-center gap-3">
-                  {/* CORRECCIÓN AQUÍ: Agregamos clases de borde y de estado seleccionado (data-[state=checked]) */}
                   <RadioGroupItem
                     value="domicilio"
                     id="domicilio"
@@ -147,13 +192,11 @@ export function CheckoutView() {
                 <span className="text-sm font-medium">{formatColones(3500)}</span>
               </Label>
 
-              {/* Opción 2: Retiro */}
               <Label
                 htmlFor="retiro"
                 className="flex cursor-pointer items-center justify-between rounded-md border border-border p-4 transition-colors hover:bg-gray-50"
               >
                 <span className="flex items-center gap-3">
-                  {/* CORRECCIÓN AQUÍ: Mismas clases de control para el estado del círculo */}
                   <RadioGroupItem
                     value="retiro"
                     id="retiro"
@@ -170,7 +213,6 @@ export function CheckoutView() {
                 </span>
                 <span className="text-sm font-medium text-green-600">Gratis</span>
               </Label>
-
             </RadioGroup>
 
             {shipping === 'domicilio' && (
@@ -199,7 +241,7 @@ export function CheckoutView() {
                 </Label>
                 <Textarea
                   id="custom-notes"
-                  placeholder="Fechas importantes, preferencias de color, referencias..."
+                  placeholder="Fechas importantes, preferences de color, referencias..."
                 />
               </div>
             </fieldset>
@@ -266,6 +308,44 @@ export function CheckoutView() {
             <span className="font-heading text-2xl text-black">{formatColones(total)}</span>
           </div>
         </aside>
+      </div>
+
+      {/* PASARELA DE PRODUCTOS COMPLEMENTARIOS */}
+      <div className="mt-12 bg-white p-8 rounded-lg border border-gray-100">
+        <h3 className="font-heading text-xl text-black font-semibold mb-2">
+          ¿Deseas agregar un toque final a tu traje?
+        </h3>
+        <p className="text-sm text-gray-400 mb-6">Completa tu outfit folklórico costarricense con estos accesorios:</p>
+        
+        <div className="flex gap-4 overflow-x-auto pb-4 snap-x snap-mandatory scrollbar-thin">
+          {PRODUCTOS_COMPLEMENTARIOS.map((prod) => (
+            <div 
+              key={prod.id} 
+              className="bg-[#F9F6F0] min-w-[180px] max-w-[180px] snap-start border border-gray-200 rounded-md p-3 flex flex-col justify-between"
+            >
+              <div className="relative aspect-square w-full mb-2 rounded bg-white overflow-hidden">
+                <img src={prod.image} alt={prod.name} className="h-full w-full object-cover" />
+              </div>
+              <div className="flex-1 flex flex-col justify-between">
+                <h4 className="text-xs font-medium text-gray-900 line-clamp-2 text-left">
+                  {prod.name}
+                </h4>
+                <p className="text-sm font-semibold text-gray-800 mt-1 text-left">
+                  {formatColones(prod.price)}
+                </p>
+              </div>
+              <Button 
+                type="button"
+                onClick={() => addItem(prod, { size: 'Única' })}
+                size="sm" 
+                variant="outline"
+                className="mt-3 w-full text-xs bg-white text-black border-gray-300 hover:bg-gray-50"
+              >
+                + Agregar
+              </Button>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   )

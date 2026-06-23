@@ -52,8 +52,13 @@ export function ProductGrid() {
         </div>
       </div>
 
-      {/* Grilla de productos */}
-      <div className="grid grid-cols-2 gap-x-5 gap-y-10 md:grid-cols-3">
+      {/* 
+        CORRECCIÓN AQUÍ: 
+        - Mantenemos grid-cols-2 en móvil (para que no queden muy estrujados).
+        - Cambiamos md:grid-cols-3 por md:grid-cols-4 en pantallas medianas/laptops.
+        - Añadimos lg:grid-cols-5 en pantallas de escritorio más grandes para aumentar más la malla y achicar los divs.
+      */}
+      <div className="grid grid-cols-2 gap-x-5 gap-y-10 md:grid-cols-4 lg:grid-cols-5">
         {filtered.map((product) => (
           <ProductCard key={product.id} product={product} />
         ))}
