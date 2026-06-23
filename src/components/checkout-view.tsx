@@ -12,8 +12,6 @@ import {
 } from './ui/radio-group'
 import { useCart } from './cart-provider'
 import { formatColones } from '../lib/products'
-import { HashLink } from 'react-router-hash-link';
-
 export function CheckoutView() {
 
   const { items, subtotal, clear } = useCart()
@@ -87,14 +85,14 @@ export function CheckoutView() {
 
   return (
     <div className="mx-auto max-w-6xl px-5 py-8 md:py-12 bg-[#F9F6F0] text-gray-600">
-      <HashLink
-        smooth
+      <Link
         to="/#galeria"
+        onClick={(e) => handleScrollLink(e, 'galeria')}
         className="mb-6 inline-flex items-center gap-1 text-sm text-muted-foreground transition-colors hover:text-foreground"
       >
         <ChevronLeft className="size-4" />
         Seguir comprando
-      </HashLink>
+      </Link>
 
       <div className="mt-2 grid gap-12 lg:grid-cols-[1fr_380px] bg-white p-8 rounded-lg">
         <form onSubmit={handleSubmit} className="space-y-10">
