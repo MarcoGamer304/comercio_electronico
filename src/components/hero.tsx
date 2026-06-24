@@ -1,36 +1,40 @@
 import { Link, useLocation } from 'react-router-dom'
 import { Button } from './ui/button'
 import { useCart } from './cart-provider' 
-import { formatColones } from '../lib/products'
+import { products, formatColones } from '../lib/products'
 
-// Muestra de productos con imágenes reales para asegurar el renderizado
-const PRODUCTOS_DESCUENTO = [
+// 1. Vinculamos las ofertas a los IDs reales de tu archivo 'products.ts'
+// Esto te permite definir qué porcentaje o precio de descuento aplica cada uno.
+const CONFIG_OFERTAS = [
   {
-    id: 'desc-1',
-    name: 'Combo Blusa Folklórica + Pañuelo',
-    price: 17500, // Precio con descuento
-    precioOriginal: 25000,
-    image: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&auto=format&fit=crop&q=60',
+    id: 'traje-tipico', // ID real en products.ts
+    precioOferta: 75000, // Precio especial
   },
   {
-    id: 'desc-2',
-    name: 'Falda Típica Escolar (Especial)',
-    price: 12600, // Precio con descuento
-    precioOriginal: 18000,
-    image: 'https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?w=400&auto=format&fit=crop&q=60',
+    id: 'blusa-bordada', // ID real en products.ts
+    precioOferta: 26000, // Precio especial
   },
   {
-    id: 'desc-3',
-    name: 'Fajón Artesanal Tricolor',
-    price: 5600, // Precio con descuento
-    precioOriginal: 8000,
-    image: 'https://images.unsplash.com/photo-1539109136881-3be0616acf4b?w=400&auto=format&fit=crop&q=60',
+    id: 'camisa-hombre', // ID real en products.ts
+    precioOferta: 58000, // Precio especial
   }
 ]
 
 export function Hero() {
-  const location = useLocation();
-  const { addItem } = useCart() // Tipado estricto sin 'any'
+  const location = useLocation()
+  const { addItem } = useCart()
+
+  // 2. Mapeamos y filtramos para obtener los objetos completos con sus imágenes y descripciones reales
+  const productosEnOferta = CONFIG_OFERTAS.map((oferta) => {
+    const productoOriginal = products.find((p) => p.id === oferta.id)
+    if (!productoOriginal) return null
+    
+    return {
+      ...productoOriginal,
+      precioOriginal: productoOriginal.price, // Guardamos el valor original para tacharlo
+      price: oferta.precioOferta, // Pisamos el precio base con el de oferta para el carrito
+    }
+  }).filter(Boolean) // Removemos nulos si algún ID no se encontrara
 
   const handleScrollLink = (e: React.MouseEvent<HTMLAnchorElement>, targetId: string) => {
     if (location.pathname === '/') {
@@ -82,45 +86,57 @@ export function Hero() {
       {/* PASARELA DE PRODUCTOS CON DESCUENTO */}
       <div className="mb-10 max-w-6xl mx-auto px-2">
         <h3 className="font-heading text-xl text-black font-semibold mb-4 text-center md:text-left">
-           Ofertas Especiales de Temporada
+          Ofertas Especiales de Temporada
         </h3>
         <div className="flex gap-4 overflow-x-auto pb-4 pt-2 snap-x snap-mandatory scrollbar-thin">
-          {PRODUCTOS_DESCUENTO.map((prod) => (
-            <div 
-              key={prod.id} 
-              className="bg-white min-w-[220px] max-w-[220px] snap-start border border-gray-200 rounded-lg p-4 shadow-sm flex flex-col justify-between"
-            >
-              <div className="relative aspect-square w-full mb-3 rounded-md overflow-hidden bg-gray-100">
-                <span className="absolute top-2 left-2 bg-red-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-full z-10">
-                  OFERTA
-                </span>
-                <img src={prod.image} alt={prod.name} className="h-full w-full object-cover" />
-              </div>
-              <div className="flex-1 flex flex-col justify-between">
-                <h4 className="text-sm font-medium text-gray-900 line-clamp-2 text-left mb-1">
-                  {prod.name}
-                </h4>
-                <div className="flex items-baseline gap-2 mt-auto">
-                  <span className="text-sm font-bold text-red-600">{formatColones(prod.price)}</span>
-                  <span className="text-xs text-gray-400 line-through">{formatColones(prod.precioOriginal)}</span>
-                </div>
-              </div>
-              <Button 
-                onClick={() => addItem({
-                  id: prod.id, name: `${prod.name} (% OFF)`, price: prod.price, image: prod.image,
-                  category: '',
-                  shortDescription: '',
-                  description: '',
-                  materials: '',
-                  madeToOrder: false
-                }, { size: 'Estándar' })}
-                size="sm" 
-                className="mt-3 w-full bg-black text-white hover:bg-gray-800 text-xs"
+          {productosEnOferta.map((prod) => {
+            if (!prod) return null
+            return (
+              <div 
+                key={prod.id} 
+                className="bg-white min-w-[220px] max-w-[220px] snap-start border border-gray-200 rounded-lg p-4 shadow-sm flex flex-col justify-between group transition-shadow hover:shadow-md"
               >
-                Agregar Oferta
-              </Button>
-            </div>
-          ))}
+                {/* Enlace envolvente al detalle del producto real */}
+                <Link to={`/producto/${prod.id}`} className="block flex-1 flex flex-col">
+                  <div className="relative aspect-square w-full mb-3 rounded-md overflow-hidden bg-muted">
+                    <span className="absolute top-2 left-2 bg-red-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-full z-10">
+                      OFERTA
+                    </span>
+                    <img 
+                      src={prod.image || '/placeholder.svg'} 
+                      alt={prod.name} 
+                      className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]" 
+                    />
+                  </div>
+                  
+                  <div className="flex-1 flex flex-col justify-start">
+                    <h4 className="text-sm font-medium text-gray-900 line-clamp-2 text-left mb-1 group-hover:underline">
+                      {prod.name}
+                    </h4>
+                    <p className="text-xs text-left text-gray-500 line-clamp-1 mb-2">
+                      {prod.shortDescription}
+                    </p>
+                    <div className="flex items-baseline gap-2 mt-auto pb-1">
+                      <span className="text-sm font-bold text-red-600">{formatColones(prod.price)}</span>
+                      <span className="text-xs text-gray-400 line-through">{formatColones(prod.precioOriginal)}</span>
+                    </div>
+                  </div>
+                </Link>
+
+                {/* Botón de compra rápida con precio de oferta e interfaz limpia */}
+                <Button 
+                  onClick={() => addItem(
+                    { ...prod, name: `${prod.name} (Oferta)` }, 
+                    { size: 'Estándar' }
+                  )}
+                  size="sm" 
+                  className="mt-3 w-full bg-black text-white hover:bg-gray-800 text-xs"
+                >
+                  Agregar Oferta
+                </Button>
+              </div>
+            )
+          })}
         </div>
       </div>
 
