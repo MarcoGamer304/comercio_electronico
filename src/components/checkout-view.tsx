@@ -11,14 +11,10 @@ import {
   RadioGroupItem,
 } from './ui/radio-group'
 import { useCart } from './cart-provider'
-import { formatColones, products, CONFIG_OFERTAS } from '../lib/products'
-import { cn } from '../lib/utils'
-
-// 1. Vinculamos la pasarela del checkout a los IDs de tus accesorios reales en products.ts
-const COMPLEMENTARIOS_IDS = ['panuelo-rojo', 'cinta-pelo', 'aretes-tipicos', 'abanico-madera'];
+import { formatColones } from '../lib/products'
 
 export function CheckoutView() {
-  const { items, subtotal, clear, addItem } = useCart()
+  const { items, subtotal, clear } = useCart()
   const [submitted, setSubmitted] = useState(false)
   const [shipping, setShipping] = useState('domicilio')
 
@@ -27,20 +23,6 @@ export function CheckoutView() {
   const hasCustom = items.some((i) => i.size === 'A medida')
 
   const location = useLocation();
-
-  // 2. Mapeamos los IDs de los complementarios inyectando lógica de ofertas si existiera alguna para ellos
-  const accesoriosComplementarios = COMPLEMENTARIOS_IDS.map((id) => {
-    const prodReal = products.find((p) => p.id === id)
-    if (!prodReal) return null
-
-    const oferta = CONFIG_OFERTAS.find((o) => o.id === id)
-    return {
-      ...prodReal,
-      precioOriginal: prodReal.price,
-      precioFinal: oferta ? oferta.precioOferta : prodReal.price,
-      tieneOferta: !!oferta,
-    }
-  }).filter(Boolean)
 
   const handleScrollLink = (e: React.MouseEvent<HTMLAnchorElement>, targetId: string) => {
     if (location.pathname === '/') {
@@ -97,7 +79,7 @@ export function CheckoutView() {
   }
 
   return (
-    <div className="mx-auto max-w-6xl px-5 py-8 md:py-12 bg-[#F9F6F0] text-gray-600">
+    <div className="mx-auto max-w-6xl px-5 py-8 md:py-12 bg-[#F9F6F0] text-gray-700">
       <Link
         to="/#galeria"
         onClick={(e) => handleScrollLink(e, 'galeria')}
@@ -107,7 +89,7 @@ export function CheckoutView() {
         Seguir comprando
       </Link>
 
-      <div className="mt-2 grid gap-12 lg:grid-cols-[1fr_380px] bg-white p-8 rounded-lg">
+      <div className="mt-2 grid gap-12 lg:grid-cols-[1fr_380px] bg-white p-8 rounded-lg box-shadow-sm border border-zinc-200">
         {/* Formulario */}
         <form onSubmit={handleSubmit} className="space-y-10">
           <fieldset className="space-y-4">
@@ -206,7 +188,7 @@ export function CheckoutView() {
         </form>
 
         {/* Resumen lateral */}
-        <aside className="order-first lg:order-none h-fit rounded-lg border border-border bg-zinc-50/50 p-6 lg:sticky lg:top-24">
+        <aside className="order-first lg:order-0 h-fit rounded-lg border border-border bg-zinc-50/50 p-6 lg:sticky lg:top-24">
           <p className="font-heading text-xl text-black text-left font-medium">Resumen del pedido</p>
           <ul className="mt-5 space-y-4">
             {items.map((item) => (
@@ -255,74 +237,6 @@ export function CheckoutView() {
             <span className="font-heading text-2xl font-bold text-black">{formatColones(total)}</span>
           </div>
         </aside>
-      </div>
-
-      {/* PASARELA DE PRODUCTOS COMPLEMENTARIOS REALES */}
-      <div className="mt-12 bg-white p-8 rounded-lg border border-gray-200 shadow-sm text-left">
-        <h3 className="font-heading text-xl text-black font-semibold mb-2">
-          ¿Deseas agregar un toque final a tu conjunto?
-        </h3>
-        <p className="text-sm text-gray-500 mb-6">
-          Completa tu atuendo típico costarricense añadiendo alguno de nuestros accesorios artesanales:
-        </p>
-        
-        <div className="flex gap-4 overflow-x-auto pb-4 snap-x snap-mandatory scrollbar-thin mt-4">
-          {accesoriosComplementarios.map((prod) => {
-            if (!prod) return null
-            return (
-              <div 
-                key={prod.id} 
-                className="bg-zinc-50 min-w-[190px] max-w-[190px] snap-start border border-gray-200/80 rounded-lg p-3 flex flex-col justify-between group transition-shadow hover:shadow-sm"
-              >
-                {/* Envoltura visual con enlace por si quiere revisar su detalle */}
-                <Link to={`/producto/${prod.id}`} className="block flex-1 flex flex-col">
-                  <div className="relative aspect-square w-full mb-2 rounded-md bg-white overflow-hidden border border-gray-100">
-                    {prod.tieneOferta && (
-                      <span className="absolute top-1.5 left-1.5 bg-red-600 text-white text-[9px] font-bold px-1.5 py-0.5 rounded-full z-10">
-                        OFERTA
-                      </span>
-                    )}
-                    <img 
-                      src={prod.image || '/placeholder.svg'} 
-                      alt={prod.name} 
-                      className="h-full w-full object-cover transition-transform group-hover:scale-[1.02]" 
-                    />
-                  </div>
-                  <div className="flex-1 flex flex-col justify-between text-left">
-                    <h4 className="text-xs font-medium text-gray-900 line-clamp-2 leading-tight group-hover:underline">
-                      {prod.name}
-                    </h4>
-                    <div className="flex items-baseline gap-1.5 mt-2">
-                      <span className={cn("text-sm font-bold", prod.tieneOferta ? "text-red-600" : "text-gray-900")}>
-                        {formatColones(prod.precioFinal)}
-                      </span>
-                      {prod.tieneOferta && (
-                        <span className="text-[10px] text-gray-400 line-through">
-                          {formatColones(prod.precioOriginal)}
-                        </span>
-                      )}
-                    </div>
-                  </div>
-                </Link>
-
-                <Button 
-                  type="button"
-                  onClick={() => {
-                    // Si el accesorio tiene oferta, lo inyectamos al carrito respetando su precio rebajado
-                    const finalItem = prod.tieneOferta
-                      ? { ...prod, price: prod.precioFinal, name: `${prod.name} (Oferta)` }
-                      : prod;
-                    addItem(finalItem, { size: 'Única' })
-                  }}
-                  size="sm" 
-                  className="mt-3 w-full text-xs bg-[#B23A26] text-white hover:bg-[#9c3220] transition-colors"
-                >
-                  + Agregar
-                </Button>
-              </div>
-            )
-          })}
-        </div>
       </div>
     </div>
   )

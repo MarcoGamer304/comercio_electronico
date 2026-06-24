@@ -58,7 +58,7 @@ export function ProductGrid() {
         - Cambiamos md:grid-cols-3 por md:grid-cols-4 en pantallas medianas/laptops.
         - Añadimos lg:grid-cols-5 en pantallas de escritorio más grandes para aumentar más la malla y achicar los divs.
       */}
-      <div className="grid grid-cols-2 gap-x-5 gap-y-10 md:grid-cols-4 lg:grid-cols-5">
+      <div className="grid grid-cols-2 gap-x-5 gap-y-10 md:grid-cols-4 lg:grid-cols-5 box-shadow-sm p-4 rounded-lg border-zinc-200 bg-[#EFEBE2] bg-secondary">
         {filtered.map((product) => (
           <ProductCard key={product.id} product={product} />
         ))}

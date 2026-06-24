@@ -68,7 +68,7 @@ export function Hero() {
       </div>
 
       {/* PASARELA DE PRODUCTOS CON DESCUENTO */}
-      <div className="mb-4 mx-auto px-4 py-4 bg-[#EFEBE2] bg-secondary">
+      <div className="mb-4 mx-auto px-4 py-4 bg-[#EFEBE2] bg-secondary rounded-lg border border-zinc-200 box-shadow-sm">
         <h3 className="font-heading text-xl text-black font-semibold mb-4 text-center md:text-left">
           Ofertas Especiales de Temporada
         </h3>
