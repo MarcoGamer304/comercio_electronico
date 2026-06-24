@@ -78,10 +78,10 @@ export function Hero() {
             return (
               <div 
                 key={prod.id} 
-                className="bg-white min-w-[220px] max-w-[220px] snap-start border border-gray-200 rounded-lg p-4 shadow-sm flex flex-col justify-between group transition-shadow hover:shadow-md"
+                className="bg-white min-w-55 max-w-55 snap-start border border-gray-200 rounded-lg p-4 shadow-sm flex flex-col justify-between group transition-shadow hover:shadow-md"
               >
                 {/* Enlace envolvente al detalle del producto real */}
-                <Link to={`/producto/${prod.id}`} className="block flex-1 flex flex-col">
+                <Link to={`/producto/${prod.id}`} className="block flex-1 flex-col">
                   <div className="relative aspect-square w-full mb-3 rounded-md overflow-hidden bg-muted">
                     <span className="absolute top-2 left-2 bg-red-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-full z-10">
                       OFERTA

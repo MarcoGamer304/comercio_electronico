@@ -18,7 +18,7 @@ export function ProductCard({ product }: ProductCardProps) {
       className="group flex flex-col overflow-hidden rounded-lg border border-zinc-200 bg-white p-4 transition-all hover:shadow-md"
     >
       {/* Contenedor de la Imagen */}
-      <div className="relative aspect-square w-full overflow-hidden rounded-md bg-zinc-100">
+      <div className="relative aspect-square w-full overflow-hidden rounded-md bg-zinc-100 box-shadow-sm border border-zinc-200">
         {tieneOferta && (
           <span className="absolute top-2 left-2 bg-red-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-full z-10 shadow-sm">
             OFERTA

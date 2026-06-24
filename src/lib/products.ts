@@ -1,6 +1,5 @@
-// 1. Definición del Tipo de Producto (asegúrate de tenerlo igual o similar)
+// 1. Definición del Tipo de Producto
 export type Product = {
-
   id: string
   name: string
   category: string
@@ -12,9 +11,8 @@ export type Product = {
   madeToOrder: boolean
 }
 
-// 2. Tu catálogo unificado de productos (Faldas, Blusas, Trajes y ahora Accesorios)
+// 2. Tu catálogo unificado de productos
 export const products: Product[] = [
-  // --- TUS PRODUCTOS ACTUALES (Mantén los que ya tenías aquí) ---
   {
     id: 'traje-tipico',
     name: 'Traje Típico Mujer',
@@ -89,12 +87,11 @@ export const products: Product[] = [
   },
 
   // --- NUEVOS ACCESORIOS COMPLEMENTARIOS PARA EL CHECKOUT ---
-  // Añadimos estos 4 elementos con los mismos IDs que busca el CheckoutView
   {
     id: 'panuelo-rojo',
     name: 'Pañuelo Folclórico Rojo Tradicional',
     price: 3000,
-    image: '/images/panueloRojo.jpeg', // Coloca tus rutas de imágenes reales
+    image: '/images/panueloRojo.jpeg',
     category: 'Accesorios',
     shortDescription: 'Pañuelo de algodon para trajes típicos.',
     description: 'El complemento indispensable para el traje típico costarricense. Cuadrado tradicional de color rojo intenso y bordes pulidos.',
@@ -137,15 +134,10 @@ export const products: Product[] = [
 ];
 
 // 3. Centralización de Ofertas Especiales de Temporada
-// Aquí decides qué ID del catálogo goza de un descuento y cuánto costará
 export const CONFIG_OFERTAS = [
   { id: 'traje-tipico', precioOferta: 75000 },
   { id: 'blusa-bordada', precioOferta: 26000 },
   { id: 'camisa-hombre', precioOferta: 58000 },
-
-  // Tip pro: Si en algún momento quieres poner un accesorio en oferta, 
-  // solo vienes aquí y lo agregas así:
-  // { id: 'panuelo-rojo', precioOferta: 2000 }
 ];
 
 // 4. Utilidad para formatear la moneda nacional costarricense (Colones)
@@ -157,8 +149,7 @@ export function formatColones(value: number): string {
   }).format(value);
 }
 
+// 5. Retornar un producto específico por ID (Mantenido intacto)
 export function getProduct(id: string) {
-
   return products.find((p) => p.id === id)
-
 }
