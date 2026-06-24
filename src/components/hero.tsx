@@ -114,7 +114,7 @@ export function Hero() {
                     { size: 'Estándar' }
                   )}
                   size="sm" 
-                  className="mt-3 w-full bg-black text-white hover:bg-gray-800 text-xs"
+                  className="mt-3 w-full bg-[#B23A26] text-white hover:bg-[#9c3220] transition-colors text-xs"
                 >
                   Agregar Oferta
                 </Button>
