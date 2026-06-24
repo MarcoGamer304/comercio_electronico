@@ -2,23 +2,7 @@ import { Link, useLocation } from 'react-router-dom'
 import { Button } from './ui/button'
 import { useCart } from './cart-provider' 
 import { products, formatColones } from '../lib/products'
-
-// 1. Vinculamos las ofertas a los IDs reales de tu archivo 'products.ts'
-// Esto te permite definir qué porcentaje o precio de descuento aplica cada uno.
-const CONFIG_OFERTAS = [
-  {
-    id: 'traje-tipico', // ID real en products.ts
-    precioOferta: 75000, // Precio especial
-  },
-  {
-    id: 'blusa-bordada', // ID real en products.ts
-    precioOferta: 26000, // Precio especial
-  },
-  {
-    id: 'camisa-hombre', // ID real en products.ts
-    precioOferta: 58000, // Precio especial
-  }
-]
+import { CONFIG_OFERTAS } from '../lib/products'
 
 export function Hero() {
   const location = useLocation()
@@ -84,7 +68,7 @@ export function Hero() {
       </div>
 
       {/* PASARELA DE PRODUCTOS CON DESCUENTO */}
-      <div className="mb-10 max-w-6xl mx-auto px-2">
+      <div className="mb-4 mx-auto px-4 py-4 bg-[#EFEBE2] bg-secondary">
         <h3 className="font-heading text-xl text-black font-semibold mb-4 text-center md:text-left">
           Ofertas Especiales de Temporada
         </h3>

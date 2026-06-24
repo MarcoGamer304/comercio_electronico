@@ -96,3 +96,10 @@ export function formatColones(value: number) {
     maximumFractionDigits: 0,
   }).format(value)
 }
+
+// Al final de tu src/lib/products.ts añade esto:
+export const CONFIG_OFERTAS = [
+  { id: 'traje-tipico', precioOferta: 75000 },
+  { id: 'blusa-bordada', precioOferta: 26000 },
+  { id: 'camisa-hombre', precioOferta: 58000 }
+];

@@ -7,15 +7,9 @@ import { Textarea } from "./ui/textarea";
 import { useCart } from "./cart-provider";
 import { type Product, formatColones } from "../lib/products";
 import { cn } from "../lib/utils";
+import { CONFIG_OFERTAS } from "../lib/products";
 
 const sizes = ["XS", "S", "M", "L", "XL", "A medida"];
-
-// 1. Centralizamos la misma configuración de ofertas que usamos en el Hero
-const CONFIG_OFERTAS = [
-  { id: 'traje-tipico', precioOferta: 75000 },
-  { id: 'blusa-bordada', precioOferta: 26000 },
-  { id: 'camisa-hombre', precioOferta: 58000 }
-];
 
 export function ProductDetail({ product }: { product: Product }) {
   const { addItem } = useCart();
